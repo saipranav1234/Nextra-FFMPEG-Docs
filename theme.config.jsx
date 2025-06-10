@@ -1,17 +1,17 @@
 export default {
-  logo: <strong>Nextra Demo</strong>,
+  logo: <strong>Techzipe Docs</strong>,
   project: {
-    link: "https://github.com/sankthomas/nextra-yt-demo",
+    link: "https://techzipe.com",
   },
   useNextSeoProps() {
     return {
-      titleTemplate: "Nextra Demo - %s",
+      titleTemplate: "Techzipe/Docs",
     };
   },
   footer: {
-    text: "Copyright Thomas Sankara 2024",
+    text: "Copyright Techzipe 2025",
   },
-  chat: {
-    link: "https://discord.com",
-  },
+  // chat: {
+  //   link: "https://discord.com",
+  // },
 };

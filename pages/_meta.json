@@ -7,13 +7,9 @@
   "Audio-encoding" : "Audio Encoding" ,
   "Subtitle-encoding" : "SubTitle Encoding",
   "contact": {
-    "title": "Contact Me",
+    "title": "Contact Us",
     "type": "page",
-    "href": "https://youtube.com/tsbsankara",
+    "href": "https://www.linkedin.com/company/techzipe",
     "newWindow": true
-  },
-  "about": {
-    "title": "About the author",
-    "type": "page"
   }
 }
