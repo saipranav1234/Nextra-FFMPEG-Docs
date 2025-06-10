@@ -1,9 +1,9 @@
 import { Callout } from "nextra-theme-docs";
 import { Tabs } from "nextra/components";
 
-# 🖼️ Convert Image from URL
+# 🔄 Convert Image from URL
 
-This endpoint downloads an image from a given URL and converts it to the specified format using FFmpeg.
+This endpoint downloads an image from a provided URL and converts it to a specified format using FFmpeg.
 
 ## Endpoint
 
@@ -13,75 +13,13 @@ This endpoint downloads an image from a given URL and converts it to the specifi
 
 ### Form Data Parameters
 
-* `image_url` (string): The direct URL to the source image.
-* `target_format` (string): Desired format to convert to (e.g., `png`, `webp`, `jpg`).
+- `image_url` (string): URL of the image to download and convert.
+- `target_format` (string): Target format to convert the image to (e.g., `png`, `webp`, `bmp`, `tiff`, etc.)
 
 ### Success Response
 
 ```json
 {
-  "message": "Image converted to <target_format> successfully.",
-  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<uuid>_converted.<target_format>"
+  "message": "Image converted to png successfully.",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>_converted.png"
 }
-```
-
-### Error Response
-
-```json
-{ "error": "<server error message>" }
-```
-
-<Callout type="info">
-The image is temporarily downloaded, converted using FFmpeg, and made available via a generated public URL.
-</Callout>
-
-## Usage Examples
-
-\<Tabs items={\["cURL", "React", "Next.js"]}>
-\<Tabs.Tab>
-
-```bash
-curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/ \
-  -F "image_url=https://example.com/sample.jpg" \
-  -F "target_format=png"
-```
-
-\</Tabs.Tab>
-\<Tabs.Tab>
-
-```jsx
-const formData = new FormData();
-formData.append("image_url", "https://example.com/sample.jpg");
-formData.append("target_format", "png");
-
-fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/", {
-  method: "POST",
-  body: formData
-})
-  .then(res => res.json())
-  .then(data => console.log(data.output_file));
-```
-
-\</Tabs.Tab>
-\<Tabs.Tab>
-
-```js
-// /app/api/convert-image.js (Next.js 13+ App Router)
-"use client";
-
-export async function convertImage() {
-  const formData = new FormData();
-  formData.append("image_url", "https://example.com/sample.jpg");
-  formData.append("target_format", "png");
-
-  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/", {
-    method: "POST",
-    body: formData,
-  });
-
-  const data = await res.json();
-  console.log("Converted Image URL:", data.output_file);
-}
-```
-
-\</Tabs.Tab> </Tabs>
