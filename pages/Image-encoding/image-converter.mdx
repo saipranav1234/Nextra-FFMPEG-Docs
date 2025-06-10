@@ -23,13 +23,66 @@ This endpoint downloads an image from a provided URL and converts it to a specif
   "message": "Image converted to png successfully.",
   "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>_converted.png"
 }
+```
+
+### Error Response
+
+```json
+{ "error": "<server error message>" }
+```
+
 <Callout type="info">
-  Ensure the provided `image_url` is a **direct link to an image file** (e.g., `.jpg`, `.png`) and is accessible publicly.
+Make sure the image URL is accessible and points to a direct image file like `.jpg`, `.png`, etc.
 </Callout>
+
+## Usage Examples
 
 <Tabs items={["cURL", "React", "Next.js"]}>
   <Tabs.Tab>
+
 ```bash
 curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/ \
   -F "image_url=https://example.com/image.jpg" \
   -F "target_format=png"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("image_url", "https://example.com/image.jpg");
+formData.append("target_format", "png");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log("Converted Image URL:", data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/resize-image.js (Next.js 13+ App Router)
+"use client";
+
+export async function convertImage() {
+  const formData = new FormData();
+  formData.append("image_url", "https://example.com/image.jpg");
+  formData.append("target_format", "png");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Converted Image URL:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>
