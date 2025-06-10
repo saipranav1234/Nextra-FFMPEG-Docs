@@ -1,0 +1,82 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 🎞️ Convert Video Format
+
+This endpoint converts a video from a public URL to the specified format using FFmpeg.
+
+## Endpoint
+
+`POST /convert-video/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/convert-video/`
+
+### Form Data Parameters
+
+- `video_url` (string): Public video file URL  
+- `format` (string): Output format (e.g., `mp4`, `avi`, `mov`, etc.)
+
+### Response
+
+```json
+{
+  "message": "Conversion to .mp4 successful",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<id>_input_video.mp4"
+}
+```
+
+<Callout type="info">
+Only public URLs are supported. Make sure the video file is accessible without authentication.
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/convert-video/ \
+-F "video_url=https://example.com/sample.mov" \
+-F "format=mp4"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("video_url", "https://example.com/sample.mov");
+formData.append("format", "mp4");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert-video/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/convert-video.js (Next.js 13+ App Router)
+"use client";
+
+export async function convertVideo() {
+  const formData = new FormData();
+  formData.append("video_url", "https://example.com/sample.mov");
+  formData.append("format", "mp4");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/convert-video/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Converted Video:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>

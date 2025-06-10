@@ -1,0 +1,84 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 🎬 Merge Audio with Video
+
+This endpoint merges an audio file with a video file and returns a new video with the audio embedded.
+
+## Endpoint
+
+`POST /merge-audio-video/`
+
+### Form Data Parameters
+
+- `video_url` (string): Public video file URL  
+- `audio_url` (string): Public audio file URL  
+- `format` (string): Output format (e.g., `mp4`, `avi`, etc.)
+
+### Response
+
+```json
+{
+  "message": "Audio successfully merged into video",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<id>_merged.mp4"
+}
+```
+
+<Callout type="info">
+You must provide public URLs. If the files are private, upload them to a public file host first.
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/ \
+-F "video_url=https://example.com/video.mp4" \
+-F "audio_url=https://example.com/audio.mp3" \
+-F "format=mp4"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("video_url", "https://example.com/video.mp4");
+formData.append("audio_url", "https://example.com/audio.mp3");
+formData.append("format", "mp4");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/video-merge.js (Next.js 13+ App Router)
+"use client";
+
+export async function mergeVideoAudio() {
+  const formData = new FormData();
+  formData.append("video_url", "https://example.com/video.mp4");
+  formData.append("audio_url", "https://example.com/audio.mp3");
+  formData.append("format", "mp4");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Merged Video:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>
