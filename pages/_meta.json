@@ -2,10 +2,11 @@
   "index": "Homepage",
   "getting-started": "Getting Started",
   "api-docs" : "API Docs",
-  "video-encoding" : "Video Encoding" ,
   "Image-encoding" : "Image Encoding" ,
   "Audio-encoding" : "Audio Encoding" ,
   "Subtitle-encoding" : "SubTitle Encoding",
+  "video-encoding" : "Video Encoding" ,
+   
   "contact": {
     "title": "Contact Me",
     "type": "page",

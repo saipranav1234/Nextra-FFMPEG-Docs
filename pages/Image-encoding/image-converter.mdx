@@ -23,3 +23,13 @@ This endpoint downloads an image from a provided URL and converts it to a specif
   "message": "Image converted to png successfully.",
   "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>_converted.png"
 }
+<Callout type="info">
+  Ensure the provided `image_url` is a **direct link to an image file** (e.g., `.jpg`, `.png`) and is accessible publicly.
+</Callout>
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/convert_image_from_url/ \
+  -F "image_url=https://example.com/image.jpg" \
+  -F "target_format=png"
