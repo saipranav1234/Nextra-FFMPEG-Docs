@@ -1,0 +1,97 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 🔊 Merge Audio Files
+
+This endpoint merges multiple audio files from URLs into a single audio track.
+
+## Endpoint
+
+`POST /merge-audios/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/merge-audios/`
+
+### Form Data Parameters
+
+- `audio_urls` (string): Comma-separated list of public audio URLs (minimum 2 required)
+- `format` (string): Output audio format (e.g., `mp3`, `wav`, `aac`, `m4a` — default: `mp3`)
+
+### Success Response
+
+```json
+{
+  "message": "Audios merged successfully",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>/merged_output.mp3"
+}
+```
+
+### Error Responses
+
+```json
+{ "error": "Unsupported format 'xyz'" }
+```
+```json
+{ "error": "At least two audio URLs are required" }
+```
+```json
+{ "error": "Failed to download: <url>" }
+```
+```json
+{ "error": "<ffmpeg or server error message>" }
+```
+
+<Callout type="info">
+Ensure all input audio files are accessible public URLs and in compatible formats (`mp3`, `wav`, `aac`, `m4a`).
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-audios/ \
+  -F "audio_urls=https://example.com/audio1.mp3,https://example.com/audio2.mp3" \
+  -F "format=mp3"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("audio_urls", "https://example.com/audio1.mp3,https://example.com/audio2.mp3");
+formData.append("format", "mp3");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audios/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/merge-audios.js (Next.js 13+ App Router)
+"use client";
+
+export async function mergeAudios() {
+  const formData = new FormData();
+  formData.append("audio_urls", "https://example.com/audio1.mp3,https://example.com/audio2.mp3");
+  formData.append("format", "mp3");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audios/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Merged Audio:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>

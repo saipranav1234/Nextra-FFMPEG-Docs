@@ -1,0 +1,52 @@
+import { Callout } from 'nextra-theme-docs';
+import { Tabs } from 'nextra/components';
+
+# 📝 Add Subtitles to Video
+
+This endpoint allows you to add subtitle files (e.g., `.srt`, `.ass`) to a video using FFmpeg.
+
+## Endpoint
+
+`POST /add-subtitles/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/add-subtitles/`
+
+## Request Format
+
+Send a `multipart/form-data` request with the following fields:
+
+### Form Data
+
+| Field         | Type   | Description                         |
+|---------------|--------|-------------------------------------|
+| `video_url`   | string | URL of the video file               |
+| `subtitle_url`| string | URL of the subtitle file            |
+| `format`      | string | (Optional) Output format (`mp4`, `mkv`, `mov`, `avi`) — default is `mp4` |
+
+## Example cURL Request
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/add-subtitles/ \
+  -F "video_url=https://example.com/video.mp4" \
+  -F "subtitle_url=https://example.com/subs.srt" \
+  -F "format=mp4"
+```
+
+## Sample Response
+
+```json
+{
+  "message": "Subtitles successfully added to video",
+  "output_video": "http://127.0.0.1:8000/uploads/<session_id>/video_with_subtitles.mp4"
+}
+```
+
+## Notes
+
+<Callout type="info">
+You must provide publicly accessible direct links for both `video_url` and `subtitle_url`.
+</Callout>
+
+- Supported subtitle formats depend on FFmpeg compatibility.
+- The subtitles are hardcoded into the video (burned-in).
+- The audio stream is copied without re-encoding (`-c:a copy`).

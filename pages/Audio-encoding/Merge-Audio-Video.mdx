@@ -1,0 +1,86 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 🔊 Merge Audio with Video
+
+This endpoint merges an audio file into a video by replacing the existing audio track.
+
+## Endpoint
+
+`POST /merge-audio-video/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/`
+
+### Form Data Parameters
+
+- `video_url` (string, required): URL of the input video
+- `audio_url` (string, required): URL of the input audio (MP3 recommended)
+- `format` (string, optional): Output format (`mp4`, `avi`, `mov`, `mkv`), default is `mp4`
+
+### Response
+
+```json
+{
+  "message": "Audio successfully merged into video",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<id>_merged.mp4"
+}
+```
+
+<Callout type="warning">
+The audio will replace the existing audio in the video. The duration is capped to the shorter of the two.
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/ \
+-F "video_url=https://example.com/sample-video.mp4" \
+-F "audio_url=https://example.com/sample-audio.mp3" \
+-F "format=mp4"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("video_url", "https://example.com/sample-video.mp4");
+formData.append("audio_url", "https://example.com/sample-audio.mp3");
+formData.append("format", "mp4");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/merge-audio-video.js (Next.js App Router)
+"use client";
+
+export async function mergeAudioVideo() {
+  const formData = new FormData();
+  formData.append("video_url", "https://example.com/sample-video.mp4");
+  formData.append("audio_url", "https://example.com/sample-audio.mp3");
+  formData.append("format", "mp4");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Merged Output:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>

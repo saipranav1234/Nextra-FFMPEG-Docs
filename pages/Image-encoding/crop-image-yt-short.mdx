@@ -1,0 +1,84 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# ✂️ Image Resizing to YouTube Shorts Resolution
+
+This endpoint takes an image from a provided URL and resizes it to fit the YouTube Shorts format (720x1280). If the image is already large enough, it will be cropped to center the content. If it's smaller, the image will be scaled and padded.
+
+## Endpoint
+
+`POST /crop_image_to_short/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/crop_image_to_short/`
+
+### Form Data Parameters
+
+- `image_url` (string): Direct URL of the image to be cropped or padded to Shorts resolution.
+
+### Success Response
+
+```json
+{
+  "message": "Image processed for YouTube Shorts format",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>_cropped.jpg"
+}
+```
+
+### Error Response
+
+```json
+{ "error": "<server error message>" }
+```
+
+<Callout type="info">
+This endpoint requires a direct image URL (e.g., .jpg, .png). The resulting image will match the 720x1280 resolution for YouTube Shorts.
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/crop_image_to_short/ \
+  -F "image_url=https://example.com/image.jpg"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("image_url", "https://example.com/image.jpg");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/crop_image_to_short/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/crop-image.js (Next.js 13+ App Router)
+"use client";
+
+export async function cropImageToShort() {
+  const formData = new FormData();
+  formData.append("image_url", "https://example.com/image.jpg");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/crop_image_to_short/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Cropped Image URL:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>

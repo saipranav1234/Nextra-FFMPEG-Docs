@@ -1,0 +1,98 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 🎥 Convert Images to Video
+
+This endpoint creates a video slideshow from a list of image URLs.
+
+## Endpoint
+
+`POST /images-to-video/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/images-to-video/`
+
+### Form Data Parameters
+
+- `image_urls` (string): Comma-separated list of public image URLs (e.g., JPG, PNG)
+- `seconds_per_image` (integer): Duration to display each image (default: 5)
+- `format` (string): Output video format (e.g., `mp4`, `avi`, `mov`, `mkv` — default: `mp4`)
+
+### Success Response
+
+```json
+{
+  "message": "Video created successfully",
+  "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>/output.mp4"
+}
+```
+
+### Error Responses
+
+```json
+{ "error": "Unsupported format 'xyz'." }
+```
+```json
+{ "error": "No image URLs provided" }
+```
+```json
+{ "error": "Failed to download <url>: <reason>" }
+```
+
+<Callout type="info">
+All input images must be public URLs and in supported formats (JPG, JPEG, PNG).
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/images-to-video/ \
+  -F "image_urls=https://example.com/img1.jpg,https://example.com/img2.jpg" \
+  -F "seconds_per_image=3" \
+  -F "format=mp4"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("image_urls", "https://example.com/img1.jpg,https://example.com/img2.jpg");
+formData.append("seconds_per_image", "3");
+formData.append("format", "mp4");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/images-to-video/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.output_file));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/images-to-video.js (Next.js 13+ App Router)
+"use client";
+
+export async function imagesToVideo() {
+  const formData = new FormData();
+  formData.append("image_urls", "https://example.com/img1.jpg,https://example.com/img2.jpg");
+  formData.append("seconds_per_image", "3");
+  formData.append("format", "mp4");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/images-to-video/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Generated Video:", data.output_file);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>

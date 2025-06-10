@@ -1,31 +1,31 @@
 import { Callout } from "nextra-theme-docs";
 import { Tabs } from "nextra/components";
 
-# 🎬 Merge Audio with Video
+# 📼 Merge Multiple Videos
 
-This endpoint merges an audio file with a video file and returns a new video with the audio embedded.
+This endpoint merges multiple video files from URLs into a single video.
 
 ## Endpoint
 
-`POST /merge-audio-video/`
+`POST /merge-videos/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/merge-videos/`
 
 ### Form Data Parameters
 
-- `video_url` (string): Public video file URL  
-- `audio_url` (string): Public audio file URL  
-- `format` (string): Output format (e.g., `mp4`, `avi`, etc.)
+- `video_urls` (string): Comma-separated list of public video URLs (minimum 2 required)
 
 ### Response
 
 ```json
 {
-  "message": "Audio successfully merged into video",
+  "message": "Videos merged successfully",
   "output_file": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<id>_merged.mp4"
 }
 ```
 
 <Callout type="info">
-You must provide public URLs. If the files are private, upload them to a public file host first.
+Ensure all input videos are accessible public URLs and in compatible formats (e.g., MP4).
 </Callout>
 
 ## Usage Examples
@@ -34,10 +34,8 @@ You must provide public URLs. If the files are private, upload them to a public 
   <Tabs.Tab>
 
 ```bash
-curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/ \
--F "video_url=https://example.com/video.mp4" \
--F "audio_url=https://example.com/audio.mp3" \
--F "format=mp4"
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-videos/ \
+-F "video_urls=https://example.com/clip1.mp4, https://example.com/clip2.mp4"
 ```
 
   </Tabs.Tab>
@@ -45,11 +43,9 @@ curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/ \
 
 ```jsx
 const formData = new FormData();
-formData.append("video_url", "https://example.com/video.mp4");
-formData.append("audio_url", "https://example.com/audio.mp3");
-formData.append("format", "mp4");
+formData.append("video_urls", "https://example.com/clip1.mp4, https://example.com/clip2.mp4");
 
-fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-videos/", {
   method: "POST",
   body: formData
 })
@@ -61,16 +57,14 @@ fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
   <Tabs.Tab>
 
 ```js
-// /app/api/video-merge.js (Next.js 13+ App Router)
+// /app/api/merge-videos.js (Next.js 13+ App Router)
 "use client";
 
-export async function mergeVideoAudio() {
+export async function mergeVideos() {
   const formData = new FormData();
-  formData.append("video_url", "https://example.com/video.mp4");
-  formData.append("audio_url", "https://example.com/audio.mp3");
-  formData.append("format", "mp4");
+  formData.append("video_urls", "https://example.com/clip1.mp4, https://example.com/clip2.mp4");
 
-  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-audio-video/", {
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/merge-videos/", {
     method: "POST",
     body: formData,
   });

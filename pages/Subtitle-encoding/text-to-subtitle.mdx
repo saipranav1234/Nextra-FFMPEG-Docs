@@ -1,0 +1,92 @@
+import { Callout } from "nextra-theme-docs";
+import { Tabs } from "nextra/components";
+
+# 📝 Generate Subtitle File from Text
+
+This endpoint generates a `.srt` subtitle file from a given block of text.
+
+## Endpoint
+
+`POST /generate-subtitles/`
+
+**Full URL:** `https://ffmpeg-api-1-hmzg.onrender.com/generate-subtitles/`
+
+### Form Data Parameters
+
+- `text` (string): Full block of text to convert into subtitles
+- `words_per_line` (integer): Number of words per subtitle line (default: `8`)
+- `seconds_per_line` (integer): Duration in seconds for each subtitle line (default: `3`)
+
+### Success Response
+
+```json
+{
+  "message": "Subtitle file generated",
+  "subtitle_file_url": "https://ffmpeg-api-1-hmzg.onrender.com/uploads/<session_id>/generated_subtitles.srt"
+}
+```
+
+### Error Response
+
+```json
+{ "error": "<server error message>" }
+```
+
+<Callout type="info">
+Use clear and punctuated text for best subtitle line breaks. Suitable for generating basic subtitle `.srt` files.
+</Callout>
+
+## Usage Examples
+
+<Tabs items={["cURL", "React", "Next.js"]}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://ffmpeg-api-1-hmzg.onrender.com/generate-subtitles/ \
+  -F "text=Welcome to the show. This is where it all begins." \
+  -F "words_per_line=4" \
+  -F "seconds_per_line=2"
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```jsx
+const formData = new FormData();
+formData.append("text", "Welcome to the show. This is where it all begins.");
+formData.append("words_per_line", "4");
+formData.append("seconds_per_line", "2");
+
+fetch("https://ffmpeg-api-1-hmzg.onrender.com/generate-subtitles/", {
+  method: "POST",
+  body: formData
+})
+  .then(res => res.json())
+  .then(data => console.log(data.subtitle_file_url));
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```js
+// /app/api/generate-subtitles.js (Next.js 13+ App Router)
+"use client";
+
+export async function generateSubtitles() {
+  const formData = new FormData();
+  formData.append("text", "Welcome to the show. This is where it all begins.");
+  formData.append("words_per_line", "4");
+  formData.append("seconds_per_line", "2");
+
+  const res = await fetch("https://ffmpeg-api-1-hmzg.onrender.com/generate-subtitles/", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log("Subtitle File URL:", data.subtitle_file_url);
+}
+```
+
+  </Tabs.Tab>
+</Tabs>
